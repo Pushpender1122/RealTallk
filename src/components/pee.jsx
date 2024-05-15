@@ -10,9 +10,8 @@ const VideoCall = () => {
     const localVideoRef = useRef(null);
     const remoteVideoRef = useRef(null);
     const peerInstance = useRef(null);
-    const username = process.env.REACT_APP_METERED_USERNAME;
-    const credential = process.env.REACT_APP_METERED_PASSWORD;
-    console.log(username, credential);
+    // const username = process.env.REACT_APP_METERED_USERNAME;
+    // const credential = process.env.REACT_APP_METERED_PASSWORD;
 
     useEffect(() => {
 
@@ -21,29 +20,29 @@ const VideoCall = () => {
                 config: {
                     'iceServers': [
                         { urls: 'stun:stun.l.google.com:19302' },
-                        {
-                            urls: "stun:stun.relay.metered.ca:80",
-                        },
-                        {
-                            urls: "turn:global.relay.metered.ca:80",
-                            username,
-                            credential,
-                        },
-                        {
-                            urls: "turn:global.relay.metered.ca:80?transport=tcp",
-                            username,
-                            credential,
-                        },
-                        {
-                            urls: "turn:global.relay.metered.ca:443",
-                            username,
-                            credential,
-                        },
-                        {
-                            urls: "turns:global.relay.metered.ca:443?transport=tcp",
-                            username,
-                            credential,
-                        },
+                        // {
+                        //     urls: "stun:stun.relay.metered.ca:80",
+                        // },
+                        // {
+                        //     urls: "turn:global.relay.metered.ca:80",
+                        //     username,
+                        //     credential,
+                        // },
+                        // {
+                        //     urls: "turn:global.relay.metered.ca:80?transport=tcp",
+                        //     username,
+                        //     credential,
+                        // },
+                        // {
+                        //     urls: "turn:global.relay.metered.ca:443",
+                        //     username,
+                        //     credential,
+                        // },
+                        // {
+                        //     urls: "turns:global.relay.metered.ca:443?transport=tcp",
+                        //     username,
+                        //     credential,
+                        // },
                     ]
                 }
             });
@@ -80,8 +79,13 @@ const VideoCall = () => {
 
         const getAccessToMedia = async () => {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
                 setLocalStream(stream);
+                const remoteStream = new MediaStream();
+                setRemoteStream(remoteStream);
+                // if (remoteVideoRef.current) {
+                //     remoteVideoRef.current.srcObject = remoteStream;
+                // }
                 if (localVideoRef.current) {
                     localVideoRef.current.srcObject = stream;
                 }
