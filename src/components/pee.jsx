@@ -10,7 +10,8 @@ const VideoCall = () => {
     const localVideoRef = useRef(null);
     const remoteVideoRef = useRef(null);
     const peerInstance = useRef(null);
-
+    const username = process.env.METERED_USERNAME;
+    const credential = process.env.METERED_PASSWORD;
     useEffect(() => {
 
         const initializePeer = (stream) => {
@@ -23,23 +24,23 @@ const VideoCall = () => {
                         },
                         {
                             urls: "turn:global.relay.metered.ca:80",
-                            username: "ffb8a32576764de7bfd1a6ca",
-                            credential: "qLuEtfaGx/ra2xwH",
+                            username,
+                            credential,
                         },
                         {
                             urls: "turn:global.relay.metered.ca:80?transport=tcp",
-                            username: "ffb8a32576764de7bfd1a6ca",
-                            credential: "qLuEtfaGx/ra2xwH",
+                            username,
+                            credential,
                         },
                         {
                             urls: "turn:global.relay.metered.ca:443",
-                            username: "ffb8a32576764de7bfd1a6ca",
-                            credential: "qLuEtfaGx/ra2xwH",
+                            username,
+                            credential,
                         },
                         {
                             urls: "turns:global.relay.metered.ca:443?transport=tcp",
-                            username: "ffb8a32576764de7bfd1a6ca",
-                            credential: "qLuEtfaGx/ra2xwH",
+                            username,
+                            credential,
                         },
                     ]
                 }
