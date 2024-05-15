@@ -10,8 +10,10 @@ const VideoCall = () => {
     const localVideoRef = useRef(null);
     const remoteVideoRef = useRef(null);
     const peerInstance = useRef(null);
-    const username = process.env.METERED_USERNAME;
-    const credential = process.env.METERED_PASSWORD;
+    const username = process.env.REACT_APP_METERED_USERNAME;
+    const credential = process.env.REACT_APP_METERED_PASSWORD;
+    console.log(username, credential);
+
     useEffect(() => {
 
         const initializePeer = (stream) => {
