@@ -19,30 +19,28 @@ const VideoCall = () => {
                     'iceServers': [
                         { urls: 'stun:stun.l.google.com:19302' },
                         {
-                            urls: 'turn:numb.viagenie.ca',
-                            credential: 'muazkh',
-                            username: 'webrtc@live.com'
+                            urls: "stun:stun.relay.metered.ca:80",
                         },
                         {
-                            urls: 'turn:192.158.29.39:3478?transport=udp',
-                            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-                            username: '28224511:1379330808'
+                            urls: "turn:global.relay.metered.ca:80",
+                            username: "ffb8a32576764de7bfd1a6ca",
+                            credential: "qLuEtfaGx/ra2xwH",
                         },
                         {
-                            urls: 'turn:192.158.29.39:3478?transport=tcp',
-                            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-                            username: '28224511:1379330808'
+                            urls: "turn:global.relay.metered.ca:80?transport=tcp",
+                            username: "ffb8a32576764de7bfd1a6ca",
+                            credential: "qLuEtfaGx/ra2xwH",
                         },
                         {
-                            urls: 'turn:turn.bistri.com:80',
-                            credential: 'homeo',
-                            username: 'homeo'
+                            urls: "turn:global.relay.metered.ca:443",
+                            username: "ffb8a32576764de7bfd1a6ca",
+                            credential: "qLuEtfaGx/ra2xwH",
                         },
                         {
-                            urls: 'turn:turn.anyfirewall.com:443?transport=tcp',
-                            credential: 'webrtc',
-                            username: 'webrtc'
-                        }
+                            urls: "turns:global.relay.metered.ca:443?transport=tcp",
+                            username: "ffb8a32576764de7bfd1a6ca",
+                            credential: "qLuEtfaGx/ra2xwH",
+                        },
                     ]
                 }
             });
