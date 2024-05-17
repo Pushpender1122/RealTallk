@@ -1,29 +1,33 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 const { socket } = require('../socket');
-
 const Chat = () => {
     const [messages, setMessages] = useState([{ user: 'User', content: 'Welcome to the chat!' }]);
-    const [receivedMessages, setReceivedMessages] = useState([{ user: 'Admin', content: 'Welcome to the chat!' }]);
     const [input, setInput] = useState('');
     const messagesEndRef = useRef(null);
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const currentUser = queryParams.get('name');
+    const [remoteUsername, setRemoteUsername] = useState('');
     useEffect(() => {
-        if (currentUser) {
-            socket.emit('join-room:chat', 'room', currentUser);
-            console.log('currentUser', currentUser);
-        }
-    }, [currentUser]);
-    useEffect(() => {
+        socket.connect();
         socket.on('message', (message) => {
             console.log('message', message);
             setMessages((prevMessages) => [...prevMessages, message]);
         });
+        socket.on('user-disconnected', () => {
+            setMessages((prevMessages) => [...prevMessages, { user: "U", content: 'User disconnected!' }]);
+            console.log('User disconnected');
+            // setRemoteUsername('');
+        })
+        socket.on('user-connected', (msg) => {
+            console.log('User connected', msg);
+            setMessages((prevMessages) => [...prevMessages, { user: "U", content: 'New User connected!' }]);
+        });
         return () => {
-            socket.off('message');
+            socket.disconnect();
         };
+
     }, []);
 
     useEffect(() => {
@@ -41,11 +45,23 @@ const Chat = () => {
     };
 
     const isCurrentUser = (user) => {
-        console.log('currentUser', currentUser == user);
-        console.log('currentUser', currentUser, user);
         return currentUser == user;
     }
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+                console.log('Escape key pressed');
+                socket.emit('change-user', socket.id);
+            }
+        };
 
+        window.addEventListener('keydown', handleKeyDown);
+
+        // Clean up the event listener on component unmount
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
     return (
         <div className="fixed right-0 top-0 h-full p-1 flex flex-col bg-white shadow-lg rounded-lg chat-container max-w-full" style={{ width: '500px' }}>
             <div className="flex-1 overflow-y-auto mb-4">
@@ -58,21 +74,23 @@ const Chat = () => {
                                 </div>
                                 <div
                                     className={`w-10 h-10 ml-2 rounded-full bg-green-500 flex items-center justify-center text-white`}>
-                                    {message.user[0].toUpperCase()}
+                                    {message.user[0]?.toUpperCase()}
                                 </div>
                             </div>) :
                             (<div key={index} className={`p-2 rounded mb-1 flex items-center justify-start`}  >
                                 <div className={`w-10 h-10 rounded-full bg-${isCurrentUser(message.user) ? 'green' : 'blue'}-500 flex items-center justify-center text-white`} >
-                                    {message.user[0].toUpperCase()}
+                                    {message.user[0]?.toUpperCase()}
                                 </div>
                                 <div className="text-left ml-2" style={{ maxWidth: '250px', wordBreak: 'break-all' }}>
                                     {message.content}
                                 </div>
                             </div>)
                         }
+
                     </>
 
                 ))}
+
                 <div ref={messagesEndRef} />
             </div>
             <form onSubmit={handleSubmit} className="flex">

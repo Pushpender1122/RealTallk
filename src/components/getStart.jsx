@@ -5,16 +5,19 @@ function GetStart() {
     const [name, setName] = useState('');
     const navigator = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleChatOnly = () => {
         if (name.trim() !== '') {
             navigator(`/chat?name=${encodeURIComponent(name)}`);
         }
     };
-
+    const handleVideo = () => {
+        if (name.trim() !== '') {
+            navigator(`/both?name=${encodeURIComponent(name)}`);
+        }
+    }
     return (
         <div className="flex justify-center items-center h-screen">
-            <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
                         Enter Your Name:
@@ -29,11 +32,11 @@ function GetStart() {
                     />
                 </div>
                 <div className="flex items-center justify-between">
-                    <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        type="submit"
-                    >
-                        Submit
+                    <button onClick={handleChatOnly} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" >
+                        Chat
+                    </button>
+                    <button onClick={handleVideo} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" >
+                        Video
                     </button>
                 </div>
             </form>
